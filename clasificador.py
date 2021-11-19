@@ -1,17 +1,21 @@
 import os
-import requests
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+chromedriver = 'C:/Users/Juani Gerarduzzi/Desktop/UTN/PROYECTO/code/chromedriver.exe'
+
+URL = 'https://www.boletinoficial.gob.ar/seccion/primera'
+os.environ["webdriver.chrome.driver"] = chromedriver
+chrome_options = Options()
+
+prefs = {'profile.default_content_setting_values.automatic_downloads': 1}
+chrome_options.add_experimental_option("prefs", prefs)
+driver = webdriver.Chrome(chrome_options=chrome_options)
+
+driver.get(URL)
+driver.execute_script("descargarPDFSeccion('primera','20211117', '/pdf/download_section')")
+driver.execute_script("descargarPDFSeccion('primera','20211116', '/pdf/download_section')")
+driver.execute_script("descargarPDFSeccion('primera','20211118', '/pdf/download_section')")
 
 
 
-urls = [
-    'http://s3.arsat.com.ar/cdn-bo-001/pdf-del-dia/primera.pdf',
-]
-
-output_dir = '.\output'
-
-for url in urls:
-    response = requests.get(url)
-    if response.status_code==200:
-        file_path = os.path.join(output_dir,os.path.basename(url))
-        with open (file_path,'wb') as f:
-            f.write(response.content)
