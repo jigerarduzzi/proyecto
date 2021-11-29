@@ -2,7 +2,8 @@ from calendar import calendar
 from tkinter import *
 from tkcalendar import *
 from datetime import datetime
-from clasificador import Downloader
+from downloader import Downloader
+from  tkinter import ttk
 
 selected_dates = []
 
@@ -20,9 +21,6 @@ def grab_date():
     selected_date = cal.get_date()
     can_be_added = True
     aux=datetime.strptime(str(selected_date), "%d/%m/%Y")
-   # if (selected_date not in selected_dates) and (aux.weekday() < 5) and (datetime.strptime(str(selected_date), "%d/%m/%Y")<=datetime.strptime(present.strftime("%d-%m-%Y"),"%d-%m-%Y")):
-    #    selected_dates.append(selected_date)
-     #   my_label.config(text=selected_dates)
 
     #Verify if selected date is not weekend
     if (aux.weekday() < 5):
@@ -59,6 +57,7 @@ select_date_button.pack(pady=20)
 
 my_label=Label(root,text="")
 my_label.pack(pady=20)
+
 
 download_button=Button (root, text="Descargar", command=handle_downloads)
 download_button.pack(pady=20)
