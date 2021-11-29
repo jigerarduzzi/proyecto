@@ -1,5 +1,6 @@
 
 from appJar import gui
+from calendarSelectorView import CalendarSelector
 
 class Main(object):
     app = gui("Clasificador de Leyes", "600x500")
@@ -22,7 +23,6 @@ class Main(object):
         self.app.setLabelFont("tituloMain", size=18, weight="bold")
         self.app.stopFrame()
 
-        
         self.app.addLabelEntry("Mensaje")
 
         self.app.addButtons(["Volver", "Enviar"], print("as"))
@@ -37,10 +37,10 @@ class Main(object):
         self.app.setLabelFont("OptionTitle", size=18, weight="bold")
         self.app.stopFrame()
         self.app.startFrame("BUTTONSOPTIONS")
-        self.app.addButton("Descargar BORAS", print("as"), 0, 0)
-        self.app.addButton("A implementar", print("as"), 0, 1)
-        self.app.addButton("A implementarr", print("as"), 1, 0)
-        self.app.addButton("A implementarrr", print("as"), 1, 1)
+        self.app.addButton("Descargar BORAS",MenuButtons.menuButtons, 0, 0)
+        self.app.addButton("A implementar", MenuButtons.menuButtons, 0, 1)
+        self.app.addButton("A implementarr", MenuButtons.menuButtons, 1, 0)
+        self.app.addButton("A implementarrr", MenuButtons.menuButtons, 1, 1)
         self.app.stopFrame()
         self.app.addButton("Salir", print("as"))
         self.app.stopFrame()
@@ -48,5 +48,16 @@ class Main(object):
         self.app.stopFrameStack()
         self.app.go()
         pass
+
+class MenuButtons(object):
+    def menuButtons(button):
+      if button == "Descargar BORAS":
+        calendar=CalendarSelector()
+      if button == "A implementar":
+        print("A implementar")
+      if button == "A implementarr":
+        print("A implementarr")
+      if button == "A implementarrr":
+        print("A implementarrr")
 
 chat = Main()
