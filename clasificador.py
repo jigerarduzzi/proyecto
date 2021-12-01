@@ -14,7 +14,7 @@ class Main(object):
         self.app.startFrameStack("MENU")
  
         self.app.startFrame("Main")
-        #self.app.setBg("gray")
+       # self.app.setBg("gray")
         self.app.setPadding([20,5])
 
         self.app.startFrame("TITULOMAIN")
