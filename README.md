@@ -1,4 +1,4 @@
-# Proyecto Final de Carrera: Seguridad Ciudadana
+# Proyecto Final de Carrera: Clasificador de textos legales
 Proyecto final para la carrera de Ingeniería en Sistemas de Información
 
 **Instalación**
