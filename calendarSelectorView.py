@@ -31,21 +31,32 @@ class CalendarSelector(object):
             can_be_added = True
             aux=datetime.strptime(str(selected_date), "%d/%m/%Y")
 
-        #Verify if selected date is not weekend
+            #Verify if selected date is not weekend
             if (aux.weekday() < 5):
-                alert_weekend_label.config(text="")
+                if "*No se puede seleccionar fines de semana" in alert_array:
+                    alert_array.remove("*No se puede seleccionar fines de semana")
             else: 
-                alert_weekend_label.config(text="*fin de semana")
+                if "*No se puede seleccionar fines de semana" not in alert_array:
+                    alert_array.append("*No se puede seleccionar fines de semana")
                 can_be_added = False
 
-    #Verify if selected date is not future date
+            #Verify if selected date is not future date
             if(datetime.strptime(str(selected_date), "%d/%m/%Y")<=datetime.strptime(present.strftime("%d-%m-%Y"),"%d-%m-%Y")):
-                alert_future_date_label.config(text="")
-            else: 
-                alert_future_date_label.config(text="*fecha futura") 
+                if "*No se puede seleccionar una fecha futura" in alert_array:
+                    alert_array.remove("*No se puede seleccionar una fecha futura")
+            else:
+                if "*No se puede seleccionar una fecha futura" not in alert_array:
+                    alert_array.append("*No se puede seleccionar una fecha futura") 
                 can_be_added = False
+                
+            #Show alerts
+            alert_string="" 
+            for x in alert_array:
+                #String to print alerts correctly
+                alert_string=alert_string+"\n"+str(x)
+            alert_label.config(text=alert_string)
 
-    #Add to array if it is possible
+            #Add to array if it is possible
             if(can_be_added) and (selected_date not in selected_dates):
                 selected_dates.append(selected_date)
                 my_label.config(text=selected_dates)    
@@ -54,11 +65,11 @@ class CalendarSelector(object):
             if len(selected_dates) > 0 :
                 downloader = Downloader
                 downloader.downloadFiles(selected_dates)
+        
+        alert_array=[]
 
-        alert_weekend_label=Label(root,text="")
-        alert_weekend_label.pack(pady=10)
-        alert_future_date_label=Label(root,text="")
-        alert_future_date_label.pack(pady=10)
+        alert_label=Label(root,text="", fg="red")
+        alert_label.pack(pady=10)
 
 
         select_date_button=Button (root, text="Seleccionar", command=grab_date)
