@@ -8,4 +8,4 @@ Herramientas necesarias:
 
 *Visual Studio Code (junto con la extensión de Python)
 
-*Librerias de Python: AppJar, Pysrt, tkinter
+*Librerias de Python: AppJar, tkinter
