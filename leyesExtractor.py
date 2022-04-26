@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 #Método para encontrar la primera iteración de la palabra leyes
 def existenLeyes(list):
    i = 0
@@ -28,30 +31,39 @@ def encontrarIndices(list, index):
         index+=1
     return listaIndices
 
-def crearLey(linesBora, inicio, fin, nLey):
-    with open('Leyes/BoraX_Ley'+str(nLey), 'w') as l:
+def crearLey(bora,linesBora, inicio, fin, nLey):
+    with open('Leyes/Bora'+bora.replace('seccion_primera','')+'_Ley'+str(nLey), 'w') as l:
         while (inicio <= fin):
             l.write(linesBora[inicio])
             inicio+=1
     l.close()
 
 #Método que se utiliza para crear los archivos con la lista y los índices
-def creadorArchivosLeyes(linesBora, listaIndices):
+def creadorArchivosLeyes(bora,linesBora, listaIndices):
     i, nLey = 0, 1
     print(i, nLey)
     while i < len(listaIndices):
         if (linesBora[listaIndices[i]][2:8] == linesBora[listaIndices[i+1]][2:8]):
-            crearLey(linesBora, listaIndices[i], listaIndices[i+1], nLey)
+            crearLey(bora,linesBora, listaIndices[i], listaIndices[i+1], nLey)
             nLey+=1
         i+=2
     return
 
-with open('Boras downloaded/file.xml', 'r') as f:
-    linesBora = f.readlines()
-    index = existenLeyes(linesBora)
-    if (index > 0):
-        #Se podría hacer un return por si se quiere hacer una comprobación de si existen leyes
-        print("Existen leyes en este Bora")
-        listaIndices = encontrarIndices(linesBora, (index))
-        creadorArchivosLeyes(linesBora, listaIndices)
-f.close()
+borasxml=[]
+
+for bora in os.listdir('Boras xml/'):
+    borasxml.append(Path(os.path.join('Boras xml/',bora)).stem)
+
+
+for bora in borasxml:
+    with open('Boras xml/'+bora+'.xml', 'r') as f:
+        linesBora = f.readlines()
+        index = existenLeyes(linesBora)
+        if (index > 0):
+            print("Existen leyes en este Bora")
+            listaIndices = encontrarIndices(linesBora, (index))
+            creadorArchivosLeyes(bora, linesBora, listaIndices)
+        f.close()
+
+
+

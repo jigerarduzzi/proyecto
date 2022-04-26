@@ -1,6 +1,8 @@
 
 from appJar import gui
 from calendarSelectorView import CalendarSelector
+from leyesExtractor import LeyesExtractor
+from pdfTextExtractor import PDFTextExtractor
 
 class Main(object):
     app = gui("Clasificador de Leyes", "600x500")
@@ -38,7 +40,7 @@ class Main(object):
         self.app.stopFrame()
         self.app.startFrame("BUTTONSOPTIONS")
         self.app.addButton("Descargar BORAS",MenuButtons.menuButtons, 0, 0)
-        self.app.addButton("A implementar", MenuButtons.menuButtons, 0, 1)
+        self.app.addButton("Exportar Leyes", MenuButtons.menuButtons, 0, 1)
         self.app.addButton("A implementarr", MenuButtons.menuButtons, 1, 0)
         self.app.addButton("A implementarrr", MenuButtons.menuButtons, 1, 1)
         self.app.stopFrame()
@@ -54,7 +56,7 @@ class MenuButtons(object):
       if button == "Descargar BORAS":
         calendar=CalendarSelector()
       if button == "A implementar":
-        print("A implementar")
+        print("A implementarr")
       if button == "A implementarr":
         print("A implementarr")
       if button == "A implementarrr":

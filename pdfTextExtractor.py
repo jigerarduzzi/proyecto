@@ -9,17 +9,24 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfparser import PDFParser
+from pathlib import Path
 
-output_string = StringIO()
-with open('Boras downloaded/seccion_primera_20211228.pdf', 'rb') as in_file:
-    parser = PDFParser(in_file)
-    doc = PDFDocument(parser)
-    rsrcmgr = PDFResourceManager()
-    device = TextConverter(rsrcmgr, output_string, laparams=LAParams())
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-    for page in PDFPage.create_pages(doc):
-        interpreter.process_page(page)
+class PDFTextExtractor:
+  boras = []
+  output_string = StringIO()
+  for file in os.listdir('Boras downloaded/'):
+    boras.append(Path(os.path.join('Boras downloaded/',file)).stem)
 
-with open('Boras downloaded/file.xml', 'w') as fd:
-  output_string.seek(0)
-  shutil.copyfileobj(output_string, fd)
+  for bora in boras:
+    with open('Boras downloaded/'+bora+'.pdf', 'rb') as in_file:
+        parser = PDFParser(in_file)
+        doc = PDFDocument(parser)
+        rsrcmgr = PDFResourceManager()
+        device = TextConverter(rsrcmgr, output_string, laparams=LAParams())
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        for page in PDFPage.create_pages(doc):
+            interpreter.process_page(page)
+
+    with open('Boras xml/'+bora+'.xml', 'w') as fd:
+      output_string.seek(0)
+      shutil.copyfileobj(output_string, fd)
