@@ -12,7 +12,7 @@ nlp = spacy.load("es_core_news_sm")
 spanishstemmer=SnowballStemmer('spanish')
 
 import json
-with open('civilDatasetTraining.json', encoding="utf8") as f:
+with open('comercialDatasetTraining.json', encoding="utf8") as f:
   data = json.load(f)
 
 
