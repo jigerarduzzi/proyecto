@@ -9,10 +9,10 @@ def addDataset(contenido, etiqueta):
         "contenido":contenido
     }
         
-    with open('dataExample.json', 'r+') as file:
+    with open('./datasets/'+etiqueta+'.json', 'r+') as file:
         data = json.load(file)
 
     data.append(newLaw)
 
-    with open('dataExample.json', "w") as file:
+    with open('./datasets/'+etiqueta+'.json', "w") as file:
         json.dump(data,file)
