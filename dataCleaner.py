@@ -21,6 +21,11 @@ def deleteEndContent(line):
 
 def tokenization(text):
     doc=nlp(text) #create spacy object of npl tipe
+    tokens = [t.orth_ for t in doc]
+    return tokens
+
+def tokenizationAndLemmatization(text):
+    doc=nlp(text) #create spacy object of npl tipe
     return [tok.lemma_.lower() for tok in doc if tok.pos_ != 'PRON'] #crea lista de palabras del texto y aplica lemas
 
 def deleteStopwords(text, stopwords):
@@ -36,18 +41,23 @@ def cleanText(line):
     #eliminar tabla de antecedentes
     cleanedText=deleteEndContent(line)
     cleanedText=re.sub(r"(\n)"," ",cleanedText)
+    #eliminar numeros romanos
+    cleanedText=re.sub(r"(M{0,3})(C[DM]|D?C{0,3})(X[LC]|L?X{0,3})(I[VX]|V?I{0,3})$","",cleanedText)
     #eliminar saltos, caracteres especioales y espacios innecesarios
     cleanedText=re.sub("\s\s+", ' ',cleanedText)
     cleanedText=unidecode(cleanedText)
     #eliminar articulo x y nro) del inicio de cada linea
     print(cleanedText)
-    cleanedText=re.sub(r"(articulo [0-9]º)|(art. [0-9]*)|(articulo [0-9]*)|(ley [0-9]*)|(^texto definitivo)|(ley e[0-9]*)|(antes dnu [0-9])|(antes ley [0-9]*)|(sancion: \d{2}/\d{2}/\d{4})|(publicacion: b.o. \d{2}/\d{2}/\d{4})|(actualizacion: \d{2}/\d{2}/\d{4})|(promulgacion: \d{2}/\d{2}/\d{4})|(rama: [a-z]*)|(^[a-z]*\))","",cleanedText.lower())
+    cleanedText=re.sub(r"(microsoft word)|(ley_[0-9]+)|(e-[0-9]+)|(articulo [0-9]º)|(art. [0-9]*)|(articulo [0-9]*)|(ley [0-9]*)|(texto definitivo)|(ley e[0-9]*)|(antes dnu [0-9])|(antes ley [0-9]*)|(sancion: \d{2}/\d{2}/\d{4})|(publicacion: b.o. \d{2}/\d{2}/\d{4})|(actualizacion: \d{2}/\d{2}/\d{4})|(promulgacion: \d{2}/\d{2}/\d{4})|(rama: [a-z]*)|(^[a-z]*\))","",cleanedText.lower())
+    #eliminar numeros 
+    cleanedText=re.sub(r"[0-9]","",cleanedText)
     #eliminar puntos y comas
     cleanedText=re.sub(r'[^\w\s]','',cleanedText)
     #eliminar stopwords
     cleanedText=deleteStopwords(cleanedText, stopwords.words('spanish'))  
-    #convertir linea a tokens de palabras
-    return tokenization(cleanedText)
+    #eliminar saltos, caracteres especioales y espacios innecesarios
+    cleanedText=re.sub("\s\s+", ' ',cleanedText)
+    return cleanedText
 
 def flattenArray(originalArray):
     flatArray=[]
@@ -70,7 +80,11 @@ def cleanDataset(rama):
     with open('./datasets/'+rama+'.json', encoding="utf8") as f:
         data = json.load(f)
     for ley in range(len(data)):
-        print(stemming(cleanText(data[ley]["contenido"])))
+
+        #print(tokenizationAndLemmatization(cleanText(data[ley]["contenido"])))
+        #or
+        print(stemming(tokenization(cleanText(data[ley]["contenido"]))))
+
         #cleanText(data[ley]["contenido"])
 
     
