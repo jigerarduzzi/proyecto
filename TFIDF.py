@@ -32,13 +32,8 @@ try:
 except FileNotFoundError:   
     raise FileNotFoundError(f"File {file_alias} at path {path_to_data} doesn't exist.")
 
-<<<<<<< HEAD
 X_train, X_test, y_train, y_test = train_test_split(df['text'].apply(lambda x: np.str_(x)), df['labels'], test_size=0.1, random_state=12)
 cv = StratifiedKFold(n_splits=20, shuffle=True)
-=======
-X_train, X_test, y_train, y_test = train_test_split(df['text'], df['labels'], test_size=0.1, random_state=12)
-cv = StratifiedKFold(n_splits=2, shuffle=True)
->>>>>>> 5693277d161ccffa33cdc9695935d6f1fc47ba9a
 
 tfidf_vectorizer = TfidfVectorizer(smooth_idf=True, norm='l2', sublinear_tf=True)
 lgr_model = LogisticRegression(C=25, solver='saga', max_iter=2000)
@@ -50,11 +45,7 @@ len(lgr_pipeline[0].get_feature_names_out())
 scores = cross_val_score(lgr_pipeline, X_train, y_train, cv=cv)  
 sc_mean = scores.mean()  
 sc_dev = scores.std()*2  
-<<<<<<< HEAD
 print(f'''Accuracy per fold: \n{scores}  Mean accuracy: {round(scores.mean(),3)}  Std. deviation: +- {round(scores.std()*2,3)}''')
-=======
-print(f'''Accuracy per fold: {scores}  Mean accuracy: {round(scores.mean(),3)}  Std. deviation: +- {round(scores.std()*2,3)}''')
->>>>>>> 5693277d161ccffa33cdc9695935d6f1fc47ba9a
 
 #hay que instalar ipython para que funcione py -m pip install ipython
 eli5.show_weights(lgr_pipeline, vec=lgr_pipeline[0], top=20, feature_filter=lambda x: x != '<BIAS>')
@@ -68,7 +59,7 @@ mistakes = [X_test[i] for i in range(len(y_pred)) if y_test[i] != y_pred[i]]
 print(classification_report(y_test, y_pred))
 
 print(f'{len(mistakes)} mistakes from {len(y_test)} validation samples:')  
-for i,f in enumerate(mistakes):   print(f"X {f} -> {y_test[i]}")
+for i,f in enumerate(mistakes):   print(f"Error {i} -> {y_test[i]}")
 
 
 
