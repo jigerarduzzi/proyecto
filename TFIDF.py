@@ -32,8 +32,8 @@ try:
 except FileNotFoundError:   
     raise FileNotFoundError(f"File {file_alias} at path {path_to_data} doesn't exist.")
 
-X_train, X_test, y_train, y_test = train_test_split(df['text'], df['labels'], test_size=0.1, random_state=12)
-cv = StratifiedKFold(n_splits=2, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(df['text'].apply(lambda x: np.str_(x)), df['labels'], test_size=0.1, random_state=12)
+cv = StratifiedKFold(n_splits=20, shuffle=True)
 
 tfidf_vectorizer = TfidfVectorizer(smooth_idf=True, norm='l2', sublinear_tf=True)
 lgr_model = LogisticRegression(C=25, solver='saga', max_iter=2000)
@@ -45,7 +45,7 @@ len(lgr_pipeline[0].get_feature_names_out())
 scores = cross_val_score(lgr_pipeline, X_train, y_train, cv=cv)  
 sc_mean = scores.mean()  
 sc_dev = scores.std()*2  
-print(f'''Accuracy per fold: {scores}  Mean accuracy: {round(scores.mean(),3)}  Std. deviation: +- {round(scores.std()*2,3)}''')
+print(f'''Accuracy per fold: \n{scores}  Mean accuracy: {round(scores.mean(),3)}  Std. deviation: +- {round(scores.std()*2,3)}''')
 
 #hay que instalar ipython para que funcione py -m pip install ipython
 eli5.show_weights(lgr_pipeline, vec=lgr_pipeline[0], top=20, feature_filter=lambda x: x != '<BIAS>')

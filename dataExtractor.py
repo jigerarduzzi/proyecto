@@ -10,7 +10,7 @@ laws = []
 newData = dataCreator
 cleaner = dataCleaner
 
-#for file in files: descomentar para crear nuevos datasetsci
+#for file in files: 
 #    parsed_pdf = parser.from_file(file) 
 #    newData.addDataset(parsed_pdf['content'], etiqueta)
 

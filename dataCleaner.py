@@ -11,6 +11,7 @@ import spacy
 # or:  py -m spacy download es_core_news_sm 
 nlp = spacy.load("es_core_news_sm")
 spanishstemmer=SnowballStemmer('spanish')
+from csv import writer
 
 def deleteEndContent(line):
     a_string = line
@@ -47,7 +48,6 @@ def cleanText(line):
     cleanedText=re.sub("\s\s+", ' ',cleanedText)
     cleanedText=unidecode(cleanedText)
     #eliminar articulo x y nro) del inicio de cada linea
-    print(cleanedText)
     cleanedText=re.sub(r"(microsoft word)|(ley_[0-9]+)|(e-[0-9]+)|(articulo [0-9]º)|(art. [0-9]*)|(articulo [0-9]*)|(ley [0-9]*)|(texto definitivo)|(ley e[0-9]*)|(antes dnu [0-9])|(antes ley [0-9]*)|(sancion: \d{2}/\d{2}/\d{4})|(publicacion: b.o. \d{2}/\d{2}/\d{4})|(actualizacion: \d{2}/\d{2}/\d{4})|(promulgacion: \d{2}/\d{2}/\d{4})|(rama: [a-z]*)|(^[a-z]*\))","",cleanedText.lower())
     #eliminar numeros 
     cleanedText=re.sub(r"[0-9]","",cleanedText)
@@ -83,7 +83,17 @@ def cleanDataset(rama):
 
         #print(tokenizationAndLemmatization(cleanText(data[ley]["contenido"])))
         #or
-        print(stemming(tokenization(cleanText(data[ley]["contenido"]))))
+        newCSVRow=stemming(tokenization(cleanText(data[ley]["contenido"])))
+        # First, open the old CSV file in append mode, hence mentioned as 'a'
+        # Then, for the CSV file, create a file object
+        with open('./datasets/Dataset.csv', 'a', newline='') as f_object:  
+        # Pass the CSV  file object to the writer() function
+            writer_object = writer(f_object)
+            # Result - a writer object
+            # Pass the data in the list as an argument into the writerow() function
+            writer_object.writerow([rama,newCSVRow])  
+            # Close the file object
+            f_object.close()
 
         #cleanText(data[ley]["contenido"])
 
